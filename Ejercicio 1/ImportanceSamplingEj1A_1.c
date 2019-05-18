@@ -10,14 +10,17 @@ double Muestreo(int iteraciones, int aceptacion, double* vec, double x0, double 
 
 int main()
 {
-	double x0, delta, *vec, porcentaje;
+	double x0, delta, delta_i, delta_f, *vec, porcentaje;
 	int iteraciones, aceptacion;
 		
 	printf("dame un x0\n");
 	scanf("%lf",&x0);
 
-	printf("dame un delta\n");
-	scanf("%lf",&delta);
+	printf("dame un delta inicial\n");
+	scanf("%lf",&delta_i);
+	
+	printf("dame un delta final\n");
+	scanf("%lf",&delta_f);
 	
 	printf("dame el numero de iteraciones que queres\n");
 	scanf("%i", &iteraciones);
@@ -32,7 +35,7 @@ int main()
 	FILE* fp;
 	fp = fopen("IMP-SAMP-ACEPTvsDELTA.txt","w");
 	srand(1);
-	for(delta = 0; delta < 50; delta = delta + 0.01)
+	for(delta = delta_i; delta < delta_f; delta = delta + 0.1)
 	{
 		
 		aceptacion = 0; // reinicio aceptacion

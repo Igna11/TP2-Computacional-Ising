@@ -34,7 +34,7 @@ int main()
 	
 	//filas en las que voy a dividir al vector de pasos vec
 	//son las subdivisiones a las cuales voy a mirar los c_k y promediar entre ellas
-	filas = 20;
+	filas = 1000;
 	
 	//columnas es el tamaño que va a tener cada subparte del vector de los pasos, es decir,
 	//si todo fuera una matriz, tendría tantas columnas, o elementos en cada fila.
@@ -43,7 +43,7 @@ int main()
 	
 	//K (mayuscula) es el paso máximo entre dos mediciones distintas para ver la correlación entre ellas, dentro de cada fila del vector de pasos
 	//K va a ser (arbitrariamente) el 30% de la longitud de cada fila del vector de pasos
-	K = 30*columnas/100;
+	K = 50*columnas/100;
 	
 	//len_ck es la dimensión del vector donde se apilan los C_K, que tiene que tener longitud N - K, con N = columnas = numero de elementos por fila
 	len_ck = columnas - K;
@@ -57,7 +57,7 @@ int main()
 	fp = fopen("correlacionvsdeltab.txt","w");
 	
 	//me genero un barrido en deltas (fino por demás, facu dijo usar 6 deltas distintos como mucho, pero para probar)
-	for(delta = 2; delta < 9; delta = delta + 1)
+	for(delta = 2; delta < 5; delta = delta + 1)
 	{	
 		fprintf(fp,"%lf\t", delta);
 		printf("delta = %lf\n", delta);
@@ -79,12 +79,12 @@ int main()
 			med_xcuad = mean_xcuad(vec, columnas);
 			med_cuadx = pow(med_xcuad,2);
 			
-			for(k = 1; k < len_ck; k++)
+			for(k = 0; k < K; k++)
 			{
 				//printf("k = %i", k);
-				pseudomed = pseudomean(vec, K, k);
+				pseudomed = pseudomean(vec, len_ck, k);
 				result = (pseudomed - med)/(med_xcuad - med_cuadx);
-				C_K[k] += result/columnas;
+				C_K[k] += result/filas;
 			}
 		}
 		

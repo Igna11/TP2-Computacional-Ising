@@ -29,22 +29,27 @@ int main()
 	printf("Cantidad de x0's que queres\n");
 	scanf("%i", &iteraciones);
 
-	len_ck = 25*iteraciones/100;
+	//len_ck va a ser (arbitrariamente) el 50% de la longitud de iteraciones.
+	len_ck = 50*iteraciones/100;
 
 	vec = (double*)malloc(iteraciones*sizeof(double));
-	C_K = (double*)calloc(len_ck,sizeof(double));
-	
-	//len_ck va a ser (arbitrariamente) el 25% de la longitud de iteraciones.
+	C_K = (double*)malloc(len_ck*sizeof(double));
 
 	aceptacion = 0;
-	promedios = 200;
+	promedios = 1000;
 	srand(1);
 	FILE* fp;
-	fp = fopen("correlacionvsdelta.txt","w");
+	fp = fopen("CorrelacionVSdelta_a.txt","w");
 	
 	//me genero un barrido en deltas (fino por demás, facu dijo usar 6 deltas distintos como mucho, pero para probar)
-	for(delta = 2; delta < 9; delta = delta + 1)
+	for(delta = 2; delta < 5; delta = delta + 1)
 	{	
+
+		//reinicio el vector C_K
+		for(k = 0; k < len_ck; k++)
+		{
+			C_K[k] = 0;
+		}
 		fprintf(fp,"%lf\t", delta);
 		for(n = 0; n < promedios; n++)
 		{	
