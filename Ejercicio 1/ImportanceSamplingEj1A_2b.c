@@ -54,7 +54,7 @@ int main()
 	srand(1);
 	
 	FILE* fp;
-	fp = fopen("correlacionvsdeltab.txt","w");
+	fp = fopen("CorrelacionVSDelta_b.txt","w");
 	
 	//me genero un barrido en deltas (fino por demás, facu dijo usar 6 deltas distintos como mucho, pero para probar)
 	for(delta = 2; delta < 5; delta = delta + 1)

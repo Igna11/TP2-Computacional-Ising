@@ -37,7 +37,7 @@ int main()
 	*/
 	FILE* fp;
 	fp = fopen("TtermalizacionVSdelta.txt","w");
-	for(d = delta_i; d < delta_f; d = d + 0.1)
+	for(d = delta_i; d < delta_f; d = d + 0.5)
 	{
 		resultado_parcial = 0;
 		resultado_final = 0;
