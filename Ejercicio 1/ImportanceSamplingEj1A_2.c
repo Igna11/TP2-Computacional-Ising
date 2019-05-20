@@ -21,7 +21,7 @@ int main()
 	int iteraciones, aceptacion, len_ck, k ,n, promedios;
 
 	//variables output
-	double med, pseudomed, med_xcuad, med_cuadx, result;
+	double pseudomed, med_xcuad, medx_cuad, result;
 		
 	printf("\n\ndame un x0\n");
 	scanf("%lf",&x0);
@@ -58,9 +58,8 @@ int main()
 			//corro la función Muestreo para que me arme el vector vec lleno de los x0
 			Muestreo(iteraciones, aceptacion, vec, x0, delta);
 			
-			med = mean(vec, iteraciones);
 			med_xcuad = mean_xcuad(vec, iteraciones);
-			med_cuadx = pow(med_xcuad,2);
+			medx_cuad = pow(med_xcuad,2);
 			
 			//reinicio result
 			result = 0;
@@ -68,7 +67,7 @@ int main()
 			for(k = 1; k < len_ck; k ++)
 			{
 				pseudomed = pseudomean(vec, len_ck, k);
-				result = (pseudomed - med)/(med_xcuad - med_cuadx);
+				result = (pseudomed - medx_cuad)/(med_xcuad - medx_cuad);
 				C_K[k] += 1.0*result/promedios;
 			}
 		}

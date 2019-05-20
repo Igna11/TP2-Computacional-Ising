@@ -21,7 +21,7 @@ int main()
 	int iteraciones, aceptacion, len_ck, filas, columnas, k , K, i;
 
 	//variables output
-	double med, pseudomed, med_xcuad, med_cuadx, result;
+	double pseudomed, med_xcuad, medx_cuad, result;
 		
 	printf("\n\ndame un x0\n");
 	scanf("%lf",&x0);
@@ -75,15 +75,14 @@ int main()
 				vec[k] = vec[i*columnas + k];
 			}	
 			
-			med = mean(vec, columnas);
 			med_xcuad = mean_xcuad(vec, columnas);
-			med_cuadx = pow(med_xcuad,2);
+			medx_cuad = pow(med_xcuad,2);
 			
 			for(k = 0; k < K; k++)
 			{
 				//printf("k = %i", k);
 				pseudomed = pseudomean(vec, len_ck, k);
-				result = (pseudomed - med)/(med_xcuad - med_cuadx);
+				result = (pseudomed - medx_cuad)/(med_xcuad - medx_cuad);
 				C_K[k] += result/filas;
 			}
 		}
