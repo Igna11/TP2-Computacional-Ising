@@ -14,7 +14,7 @@ int imprimir(int *red, int dim)
 		printf("\n");
 		//fprintf(fp,"\n");
 	}
-	printf("\n");
+	//printf("\n");
 	//fclose(fp);
 	
 return 0;

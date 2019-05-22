@@ -21,7 +21,7 @@ int main()
 	int iteraciones, aceptacion, len_ck, filas, columnas, k , K, i;
 
 	//variables output
-	double pseudomed, med_xcuad, medx_cuad, result;
+	double pseudomed, med_xcuad, medx_cuad, med, result;
 		
 	printf("\n\ndame un x0\n");
 	scanf("%lf",&x0);
@@ -42,14 +42,14 @@ int main()
 	columnas = iteraciones/filas;
 	
 	//K (mayuscula) es el paso máximo entre dos mediciones distintas para ver la correlación entre ellas, dentro de cada fila del vector de pasos
-	//K va a ser (arbitrariamente) el 30% de la longitud de cada fila del vector de pasos
-	K = 50*columnas/100;
-	
+	//K va a ser (arbitrariamente) el 50% de la longitud de cada fila del vector de pasos
+	K = columnas/(int)2;
+	printf("%i\n",K);
 	//len_ck es la dimensión del vector donde se apilan los C_K, que tiene que tener longitud N - K, con N = columnas = numero de elementos por fila
-	len_ck = columnas - K;
+	len_ck = (int)(columnas - K);
 	
 	vec = (double*)malloc(iteraciones*sizeof(double));
-	C_K = (double*)calloc(len_ck,sizeof(double));
+	C_K = (double*)malloc(len_ck*sizeof(double));
 	
 	srand(1);
 	
@@ -57,7 +57,7 @@ int main()
 	fp = fopen("CorrelacionVSDelta_b.txt","w");
 	
 	//me genero un barrido en deltas (fino por demás, facu dijo usar 6 deltas distintos como mucho, pero para probar)
-	for(delta = 2; delta < 5; delta = delta + 1)
+	for(delta = 2; delta < 10; delta = delta + 2)
 	{	
 		fprintf(fp,"%lf\t", delta);
 		printf("delta = %lf\n", delta);
@@ -72,26 +72,37 @@ int main()
 			*/
 			for(k = 0; k < columnas; k++)
 			{	
-				vec[k] = vec[i*columnas + k];
+				vec[k] = vec[i*filas + k];
+				//printf("i = %i\t k = %i\n", i,k);
+
 			}	
 			
-			med_xcuad = mean_xcuad(vec, columnas);
-			medx_cuad = pow(med_xcuad,2);
+			med = mean(vec, len_ck);
+			med_xcuad = mean_xcuad(vec, len_ck);
+			medx_cuad = med*med;
 			
 			for(k = 0; k < K; k++)
 			{
 				//printf("k = %i", k);
+				
 				pseudomed = pseudomean(vec, len_ck, k);
 				result = (pseudomed - medx_cuad)/(med_xcuad - medx_cuad);
-				C_K[k] += result/filas;
+				C_K[k] += result/(double)filas;
+				//if(k == 0)	printf("pseudomed = %lf\t med_cuad =%lf\t result = %lf\t c_k[0] = %lf\n", pseudomed, med_xcuad, result, C_K[k]);
+				
 			}
 		}
 		
-		for(k = 1; k < len_ck; k++)
+		for(k = 0; k < len_ck; k++)
 		{
 			fprintf(fp,"%lf ", C_K[k]);
 		}
 		
+		//reinicio C_K
+		for(k = 0; k < len_ck; k++)
+		{
+			C_K[k] = 0.0;
+		}
 		fprintf(fp, "\n");
 	}
 	fclose(fp);

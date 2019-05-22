@@ -16,11 +16,11 @@ int flip_aleatorio(int* red, int dim, int pasos, double B, double T);
 int main()
 {
 	int dim, *red, pasos;
-	double p, B, T;
+	double p, B, T, M;
 	
 	printf("\nDame dimension de la red\n");
 	scanf("%i", &dim);
-	
+		
 	printf("\nDame una probabilidad para distribuir uniformemente spines up\n");
 	scanf("%lf", &p);
 	
@@ -34,11 +34,20 @@ int main()
 	
 	red = (int*)malloc(dim*dim*sizeof(int));
 	
-	T = 0.5;
 	srand(1);
 	poblar(red, p, dim);
-	imprimir(red, dim);
-	flip_aleatorio(red, dim, pasos, B, T);
-	imprimir(red, dim);
+
+	FILE* fp;
+	fp = fopen("MagnetizacionVST.txt","w");
+	for(T = 100; T > 0.01; T = T - 0.1)
+	{
+		M = flip_aleatorio(red, dim, pasos, B, T);
+		M = M/(dim*dim);
+		printf("Temperatura = %lf\n", T);
+		fprintf(fp, "%lf\t", T);
+		fprintf(fp, "%lf\n", M);
+	}
+	fclose(fp);
+	free(red);
 	return 0;
 }
