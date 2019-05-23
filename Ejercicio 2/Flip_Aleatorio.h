@@ -1,7 +1,7 @@
 #pragma once
-int flip_aleatorio(int* red, int dim, int pasos, double B, double T)
+int flip_aleatorio(int* red, int dim, int muestreos, int len_mag, double* mag, double B, double T)
 {
-	int r, i;
+	int r, i, j;
 	double p_updown, p_downup, rnd, mag_final;
 	
 	/*si el campo magnético es positivo, la probabilidad de que un spin
@@ -20,15 +20,13 @@ int flip_aleatorio(int* red, int dim, int pasos, double B, double T)
 		p_downup = exp(2*B/T);
 		p_updown = 1;
 	}
-	//inicio i
-	i = 0;
-	while(i < pasos)
+	for(i = 0; i < muestreos; i++)
 	{
 		//r numero aleatorio entero entre 0 y el tamaño de la matriz, para muestrear la matriz de forma aleatoria
 		r = dim*dim*rand()/RAND_MAX;
 		rnd = (double)rand()/(double)RAND_MAX;
 		
-		
+		//agarro un spin en posicion random r y me fijo si vale 1
 		if(red[r] == 1)
 		{
 			if(p_updown > rnd)
@@ -43,12 +41,15 @@ int flip_aleatorio(int* red, int dim, int pasos, double B, double T)
 				red[r] = 1;
 			}
 		}
-		i++;
-		/*printf("paso i = %i\t",i);
-		printf("Campo B = %lf\t",B);
-		printf("P(+1,-1) = %lf\t",p_updown);
-		printf("P(-1,+1) = %lf\t",p_downup);
-		printf("P = %lf\n", rnd);*/
+				
+		if(i > (muestreos - len_mag))
+		{
+			for(j = 0; j < dim*dim; j++)
+			{
+				mag[i-(muestreos-len_mag)] += red[j];
+			}
+		}
+		
 	}
 	//calculo la magnetización de la última iteracion (final) como la suma de spines normalizada por la dimension de la red (L^2)
 	mag_final = 0;
