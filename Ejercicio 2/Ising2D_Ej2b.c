@@ -1,4 +1,4 @@
-/* gcc -Wall -O3 -o Ising2D_Ej2a.exe Ising2D_Ej2a.c -lm*/
+/* gcc -Wall -O3 -o Ising2D_Ej2b.exe Ising2D_Ej2b.c -lm*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,17 +6,17 @@
 #include <time.h>
 #include "Poblar.h"
 #include "Imprimir.h"
-#include "Flip_aleatorio.h"
+#include "FlipBJ.h"
 
 int poblar(int *red, double p, int dim);
 int imprimir(int* red, int dim);
-int flip_aleatorio(int* red, int dim, int muestreos, double B, double T);
-
+int Flip(int* red, int dim, int muestreos, double B, double T, double J);
 
 int main()
 {
-	int *red, dim, pasos, muestreos;
-	double p, B, T, M, E;
+	//int i, j, k;
+	int *red, dim, muestreos;
+	double p, B, T, J;
 	
 	printf("\nDame dimension de la red\n");
 	scanf("%i", &dim);
@@ -27,16 +27,17 @@ int main()
 	printf("\nDame una intensidad de campo magnetico B\n");
 	scanf("%lf", &B);
 	
-	printf("\nDame el numero de veces que queres barrer la red en promedio\n");
-	scanf("%i", &pasos);
+	printf("\nDame una intensidad del acoplamiento J\n");
+	scanf("%lf", &J);
 	
-	muestreos = pasos*dim*dim;
+	printf("\nDame el numero de veces que queres barrer la red\n");
+	scanf("%i", &muestreos);
+	printf("\n\n");
 	
 	red = (int*)malloc(dim*dim*sizeof(int));
-	
+	T = 1;
 	srand(time(NULL));
-	poblar(red, p, dim);
-
+	/*
 	FILE* fp;
 	
 	//forma cool de definir el nombre del .txt, para favorecer orden
@@ -50,24 +51,19 @@ int main()
 		sprintf(filename, "MvsT_dim%i_Bpos%.1lf_Pasos%i.txt", dim, B, pasos);
 	}
 	
-	fp = fopen(filename,"w");
-	int i = 0;
-	for(T = 100; T > 0.01; T = T - 0.1)
-	{	
-		M = 0;
-		for(i = 0; i < 200; i++)
-		{
-			M += flip_aleatorio(red, dim, muestreos, B, T);
-		}
-		M = M/(200*dim*dim);
-		E = -B*M;
-		
-		printf("Temperatura = %lf\n", T);
-		fprintf(fp, "%lf\t", T);
-		fprintf(fp, "%lf\t", M);
-		fprintf(fp, "%lf\n", E);
-	}
-	fclose(fp);
+	*/
+	//for(T = 100; T > 0.01; T = T - 0.1)
+	//{	
+		poblar(red, p, dim);
+		imprimir(red, dim);
+		Flip(red, dim, muestreos, B,T,J);
+		printf("\n");
+		imprimir(red, dim);
+	//}
+	
+	//fp = fopen(filename,"w");
+	
 	free(red);
+
 	return 0;
 }
