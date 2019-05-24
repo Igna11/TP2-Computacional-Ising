@@ -16,7 +16,7 @@ int flip_aleatorio(int* red, int dim, int muestreos, double B, double T);
 int main()
 {
 	int *red, dim, pasos, muestreos;
-	double p, B, T, M, E;
+	double p, B, T, M, E, M_prom, Mcuad_prom;
 	
 	printf("\nDame dimension de la red\n");
 	scanf("%i", &dim);
@@ -43,11 +43,11 @@ int main()
 	char filename[64];
 	if(B < 0)
 	{
-		sprintf(filename, "MvsT_dim%i_Bneg%.1lf_Pasos%i.txt", dim, -B, pasos);
+		sprintf(filename, "MvsT_dim%i_Bneg%.1lf_Pasos_prom%i.txt", dim, -B, pasos);
 	}
 	else
 	{
-		sprintf(filename, "MvsT_dim%i_Bpos%.1lf_Pasos%i.txt", dim, B, pasos);
+		sprintf(filename, "MvsT_dim%i_Bpos%.1lf_Pasos_prom%i.txt", dim, B, pasos);
 	}
 	
 	fp = fopen(filename,"w");
@@ -59,12 +59,16 @@ int main()
 		{
 			M += flip_aleatorio(red, dim, muestreos, B, T);
 		}
-		M = M/(200*dim*dim);
-		E = -B*M;
+		M_prom = M/(200*dim*dim);
+		Mcuad_prom = M*M/(200*dim*dim);
+		
+		E = -B*M_prom;
 		
 		printf("Temperatura = %lf\n", T);
 		fprintf(fp, "%lf\t", T);
-		fprintf(fp, "%lf\t", M);
+		fprintf(fp, "%lf\t", M_prom); //<M>
+		fprintf(fp, "%lf\t", Mcuad_prom); //<M^2>
+		fprintf(fp, "%lf\t", M_prom*M_prom); // <M>^2
 		fprintf(fp, "%lf\n", E);
 	}
 	fclose(fp);

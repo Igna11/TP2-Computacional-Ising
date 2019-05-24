@@ -35,34 +35,32 @@ int main()
 	printf("\n\n");
 	
 	red = (int*)malloc(dim*dim*sizeof(int));
-	T = 1;
+	
 	srand(time(NULL));
-	/*
+	
 	FILE* fp;
 	
 	//forma cool de definir el nombre del .txt, para favorecer orden
 	char filename[64];
-	if(B < 0)
-	{
-		sprintf(filename, "MvsT_dim%i_Bneg%.1lf_Pasos%i.txt", dim, -B, pasos);
+	
+	sprintf(filename, "JyB_MvsT_dim%i_J%.1lf_B%.1lf_Pasos%i.txt", dim,J, B, muestreos);
+	
+	double M = 0.0;
+	
+	fp = fopen(filename, "w");
+	poblar(red, p, dim);
+	
+	for(T = 10; T > 0.00001; T = T - 0.01)
+	{	
+		//imprimir(red, dim);
+		M = Flip(red, dim, muestreos, B,T,J);
+		
+		fprintf(fp,"%lf\t%lf\n",T,M);
+		printf("T = %lf\t M = %lf\n", T,M);
+		//printf("\n");
+		//imprimir(red, dim);
 	}
-	else
-	{
-		sprintf(filename, "MvsT_dim%i_Bpos%.1lf_Pasos%i.txt", dim, B, pasos);
-	}
-	
-	*/
-	//for(T = 100; T > 0.01; T = T - 0.1)
-	//{	
-		poblar(red, p, dim);
-		imprimir(red, dim);
-		Flip(red, dim, muestreos, B,T,J);
-		printf("\n");
-		imprimir(red, dim);
-	//}
-	
-	//fp = fopen(filename,"w");
-	
+	fclose(fp);
 	free(red);
 
 	return 0;
