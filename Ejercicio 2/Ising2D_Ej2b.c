@@ -7,15 +7,18 @@
 #include "Poblar.h"
 #include "Imprimir.h"
 #include "FlipBJ.h"
+#include "MedVal_d.h"
+#include "M_corr.h"
 
 int poblar(int *red, double p, int dim);
 int imprimir(int* red, int dim);
 int Flip(int* red, int dim, double B, double T, double J);
+double M_corr(double* mag, double* c_k, int* red, int dim, double B, double T, double J, int muestreos, int k_max)
 
 int main()
 {
-	int *red, dim, muestreos, promedios, i ;
-	double M, B, T, J, m_suma, m;
+	int *red, dim, muestreos, promedios, i, k;
+	double M, B, T, J, m_suma, m, tiempo;
 	
 	printf("\nDame dimension de la red\n");
 	scanf("%i", &dim);
@@ -53,12 +56,14 @@ int main()
 	double cpu_time_used;
     start = clock();
 	
+	tiempo = dim*dim*promedios*muestreos*3500/280000000;
+	printf("\nEsto va a tardar aprox %.0lf segundos o %.0lf minutos\n", tiempo ,tiempo/60);
 	for(J = 0.1; J < 0.6; J = J + 0.001)
 	{	
 		m_suma = 0.0;
 		for(i = 0; i < promedios; i++)
 		{
-			for(i = 0; i < muestreos; i++)
+			for(k = 0; k < muestreos; k++)
 			{
 				M = Flip(red, dim, B, T, J);
 			}
