@@ -10,11 +10,11 @@
 
 int poblar(int *red, double p, int dim);
 int imprimir(int* red, int dim);
-int Flip(int* red, int dim, int muestreos, double B, double T, double J);
+int Flip(int* red, int dim, double B, double T, double J);
 
 int main()
 {
-	int *red, dim, muestreos,i ;
+	int *red, dim, muestreos, promedios, i ;
 	double M, B, T, J, m_suma, m;
 	
 	printf("\nDame dimension de la red\n");
@@ -25,6 +25,9 @@ int main()
 	
 	printf("\nDame el numero de veces que queres barrer la red\n");
 	scanf("%i", &muestreos);
+	
+	printf("\nDame el numero de promedios\n");
+	scanf("%i", &promedios);
 	printf("\n\n");
 	
 	red = (int*)malloc(dim*dim*sizeof(int));
@@ -41,7 +44,7 @@ int main()
 	//forma cool de definir el nombre del .txt, para favorecer orden
 	char filename[64];
 	
-	sprintf(filename, "MvsJ_dim%i_T%.2lf_Pasos_prom%i.txt", dim, T, muestreos);
+	sprintf(filename, "MvsJ_dim%i_T%.2lf_Pasos%i_prom%i.txt", dim, T, muestreos, promedios);
 	
 	fp = fopen(filename, "w");
 	
@@ -50,18 +53,21 @@ int main()
 	double cpu_time_used;
     start = clock();
 	
-	for(J = 0.1; J < 0.6; J = J + 0.0005)
+	for(J = 0.1; J < 0.6; J = J + 0.001)
 	{	
 		m_suma = 0.0;
-		for(i = 0; i < 200; i++)
+		for(i = 0; i < promedios; i++)
 		{
-			M = Flip(red, dim, muestreos, B,T,J);
+			for(i = 0; i < muestreos; i++)
+			{
+				M = Flip(red, dim, B, T, J);
+			}
 			m_suma += M;
 		}
-		m = m_suma/(dim*dim*200);
-		fprintf(fp,"%lf\t%lf\n",J,m);
-		printf("J = %lf\t M = %lf\n", J,m);
-		
+		m = m_suma/(dim*dim*promedios);
+		M = M/(dim*dim);
+		fprintf(fp,"%lf\t%lf\t%.20lf\n", J, M, m);
+		printf("J = %lf\t M = %.2lf\t M_prom = %lf\n", J, M, m);
 	}
 	fclose(fp);
 	free(red);
