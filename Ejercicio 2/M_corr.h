@@ -18,10 +18,11 @@ double M_corr(double* mag, double* c_k, int* red, int dim, double B, double T, d
 	M_mean = mean(mag, k_max);
 	M2_mean = mean_xcuad(mag, k_max);
 	M_mean2 = M_mean*M_mean;
-	
+		
 	for(i = 0; i < k_max; i++)
 	{
 		MK_mean = pseudomean(mag, k_max, i);
+		printf("(<M*M[%i]> - <M>^2) / (<M^2> - <M>^2) = (%.2lf - %.2lf)/(%.2lf - %.2lf)\n",i, MK_mean, M_mean2, M2_mean, M_mean2);
 		result = (MK_mean - M_mean2)/(M2_mean - M_mean2);
 		c_k[i] = result;
 	}
