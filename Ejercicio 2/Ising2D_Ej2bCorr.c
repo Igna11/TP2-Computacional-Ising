@@ -46,31 +46,26 @@ int main()
 	B = 0.0;	
 	poblar(red, 0.5, dim);
 
-	//FILE* fp;
 	
-	//forma cool de definir el nombre del .txt, para favorecer orden
-	//char filename[64];
+	/*forma cool de definir el nombre del .txt, para favorecer orden
+	char filename[64];
 	
-	//sprintf(filename, "CorvsK_dim%i_Pasos%i_prom%i.txt", dim, muestreos, promedios);
+	sprintf(filename, "CorvsK_dim%i_Pasos%i_prom%i.txt", dim, muestreos, promedios);
 	
-	//fp = fopen(filename, "w");
+	fp = fopen(filename, "w")*/
 	
 	//para medir el tiempo
 	clock_t start, end;
 	double cpu_time_used;
     start = clock();
 	
-	for(J = 0.1; J < 0.6; J = J + 0.001)
+	for(J = 0.1; J < 0.2; J = J + 0.1)
 	{	
-		//fprintf(fp,"%lf\t", J);
-		printf("J = %lf\n", J);
-		
 		//limpio c_k y c_kprom
 		for(k = 0; k < k_max; k++)
 		{
 			c_kprom[k] = 0;
 			c_k[k] = 0;
-			//printf("indice %i borro\n", k);
 		}
 		
 		for(i = 0; i < promedios; i++)
@@ -82,15 +77,8 @@ int main()
 				c_kprom[k] += c_k[k];
 			}
 		}
-		for(k = 0; k < k_max; k++)
-		{
-			//fprintf(fp,"%lf ", c_kprom[k]);
-			printf("c_k[%i] = %lf\t c_kprom[%i] = %lf\n ", k, c_k[k], k, c_kprom[k]/promedios);
-		}
-		//fprintf(fp,"\n");
-		//printf("\n");
 	}
-	//fclose(fp);
+
 	free(red);
 	free(mag);
 	free(c_k);
