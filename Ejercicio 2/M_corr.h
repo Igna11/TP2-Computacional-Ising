@@ -6,7 +6,8 @@ double mean_xcuad(double* vec, int iteraciones);
 
 double M_corr(double* mag, double* c_k, int* red, int dim, double B, double T, double J, int muestreos, int k_max)
 {
-	double M_mean, M2_mean, M_mean2, MK_mean;
+	double M, M_mean, M2_mean, M_mean2, MK_mean, result;
+	int i;
 	
 	for(i = 0; i < muestreos; i++)
 	{
