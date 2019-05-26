@@ -59,26 +59,22 @@ int main()
 	double cpu_time_used;
     start = clock();
 	
-	for(J = 0.1; J < 0.2; J = J + 0.1)
-	{	
-		//limpio c_k y c_kprom
-		for(k = 0; k < k_max; k++)
+	for(J = 0.1; J < 0.6; J = J + 0.001)
+	{
+		for(i = 0; i < muestreos; i++)
 		{
-			c_kprom[k] = 0;
-			c_k[k] = 0;
+			//calculo la magnetización para un dado muestreo.
+			M = Flip(red, dim, B, T, J);
+			mag[i] = M;
 		}
 		
-		for(i = 0; i < promedios; i++)
+		
+		fprintf(fp,"%lf\t", J)
+		for(i = 0; i < k_max; i++)
 		{
-			M_corr(mag, c_k, red, dim, B, T, J, muestreos, k_max);
-			
-			for(k = 0; k < k_max; k++)
-			{
-				c_kprom[k] += c_k[k];
-			}
+			fprintf("%lf ", c_kprom[i]);
 		}
 	}
-
 	free(red);
 	free(mag);
 	free(c_k);
