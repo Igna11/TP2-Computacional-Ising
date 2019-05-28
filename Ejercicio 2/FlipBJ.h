@@ -38,7 +38,6 @@ int Flip(int* red, int dim, double B, double J, double E, FILE* fpE) // de ahora
 		}			
 	}
 	
-	printf("E es %lf\n",E);
 	fprintf(fpE,"%lf\t", E);
 	
 	for(i = 0; i < dim*dim; i++)
