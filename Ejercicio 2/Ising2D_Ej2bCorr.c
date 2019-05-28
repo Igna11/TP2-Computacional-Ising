@@ -79,8 +79,10 @@ int main()
 				mag_prom[i] += mag[i]/(double)promedios;
 			}
 		}
+		
 		fprintf(fp,"%lf\t", J);
 		printf("J = %lf\n", J);
+		
 		for(i = 0; i < muestreos; i++)
 		{
 			fprintf(fp,"%lf ", mag_prom[i]);
