@@ -54,7 +54,8 @@ int main()
 	clock_t start, end;
 	double cpu_time_used;
     start = clock();
-	
+	poblar(red, 0.5, dim);
+
 	printf("nombre de archivo: %s\n", filename);
 	for(J = 0.1; J < 0.6; J = J + 0.01)
 	{
@@ -66,7 +67,6 @@ int main()
 		
 		for(k = 0; k < promedios; k++)
 		{
-			poblar(red, 0.5, dim);
 			for(i = 0; i < muestreos; i++)
 			{
 				//calculo la magnetización para un dado muestreo.
