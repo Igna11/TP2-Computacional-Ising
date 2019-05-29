@@ -34,10 +34,11 @@ int Flip(int* red, int dim, double B, double J, double E, FILE* fpE) // de ahora
 
 			if(P_aceptacion > rnd) red[j*dim + i] = -S;
 			
-			E += S*S_arriba + S*S_abajo + S*S_izq + S*S_der;
+			E += S*(S_arriba + S_abajo + S_izq + S_der);
 		}			
 	}
 	
+	//printf("E es %lf\n",E);
 	fprintf(fpE,"%lf\t", E);
 	
 	for(i = 0; i < dim*dim; i++)
