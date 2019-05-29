@@ -42,7 +42,7 @@ int main()
 	fp = fopen("CorrelacionVSdelta_a.txt","w");
 	
 	//me genero un barrido en deltas (fino por demás, facu dijo usar 6 deltas distintos como mucho, pero para probar)
-	for(delta = 2; delta < 5; delta = delta + 1)
+	for(delta = 2; delta < 6; delta = delta + 1)
 	{	
 
 		//reinicio el vector C_K
