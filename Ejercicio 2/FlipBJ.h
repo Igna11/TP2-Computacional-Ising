@@ -37,10 +37,9 @@ int Flip(int* red, int dim, double B, double J, double E, FILE* fpE) // de ahora
 			E += S*(S_arriba + S_abajo + S_izq + S_der);
 		}			
 	}
-	
-	//printf("E es %lf\n",E);
-	fprintf(fpE,"%lf\t", E);
-	
+
+	fprintf(fpE,"%lf\t", E/(dim*dim*2));
+		
 	for(i = 0; i < dim*dim; i++)
 	{
 		M += red[i];

@@ -39,8 +39,8 @@ int main()
 	char filenameE[64];
 	char filename[64];
 	
-	sprintf(filenameE, "Correlacion_EvsJ_dim%i_Barridos%i.txt", dim, muestreos);
-	sprintf(filename, "Correlacion_MvsJ_dim%i_Barridos%i.txt", dim, muestreos);
+	sprintf(filenameE, "EvsJ_dim%i_Barridos%i.txt", dim, muestreos);
+	sprintf(filename, "MvsJ_dim%i_Barridos%i.txt", dim, muestreos);
 	
 
 	fpE = fopen(filenameE,"w");
@@ -51,19 +51,18 @@ int main()
 	double cpu_time_used;
     start = clock();
 	
-	tiempo = (double)2*dim*dim*muestreos*50/(double)107276190;
+	tiempo = dim*dim*muestreos*3500/280000000;
 	printf("\nEsto va a tardar aprox %.0lf segundos o %.0lf minutos\n", tiempo ,tiempo/60);
+		
 	for(J = 0.1; J < 0.6; J = J + 0.01)
 	{	
-		printf("J = %lf\n", J);
-
 		E = 0.0; 
 		fprintf(fp,"%lf\t",J);
 		fprintf(fpE,"%lf\t",J);
 		for(k = 0; k < muestreos; k++)
 		{
 			M = Flip(red, dim, B, J, E, fpE);
-			fprintf(fp,"%lf\t", M);
+			fprintf(fp,"%lf\t", M/(dim*dim));
 		}
 		fprintf(fp,"\n");
 		fprintf(fpE,"\n");
