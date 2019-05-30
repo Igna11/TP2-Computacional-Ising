@@ -1,4 +1,4 @@
-/* gcc -Wall -O3 -o Ising2D_Ej2b.exe Ising2D_Ej2b.c -lm*/
+/* gcc -Wall -O3 -o Ising2D_Ej2c.exe Ising2D_Ej2c.c -lm*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -42,7 +42,7 @@ int main()
 	char filenameE[64];
 	char filename[64];
 	
-	sprintf(filenameE, "EvsJ_dim%i_Barridos%i.txt", dim, muestreos);
+	sprintf(filenameE, "EvsJ_dim%i_Barridos%i_.txt", dim, muestreos);
 	sprintf(filename, "MvsJ_dim%i_Barridos%i.txt", dim, muestreos);
 	
 
@@ -54,10 +54,11 @@ int main()
 	double cpu_time_used;
     start = clock();
 	
-	tiempo = dim*dim*muestreos*3500/280000000;
-	printf("\nEsto va a tardar aprox %.0lf segundos o %.0lf minutos\n", tiempo ,tiempo/60);
+	tiempo = (double)2*dim*dim*muestreos*tau*50/(double)65641025;
+	printf("\nEsto va a tardar aprox %.0lf segundos o %.2lf minutos\n", tiempo ,tiempo/60);
 	for(J = 0.1; J < 0.6; J = J + 0.01)
 	{	
+		printf("J = %lf\n",J);
 		E_suma = 0.0;
 		fprintf(fp,"%lf\t",J);
 		fprintf(fpE,"%lf\t",J);
