@@ -42,8 +42,8 @@ int main()
 	char filenameE[64];
 	char filename[64];
 	
-	sprintf(filenameE, "EvsJ_dim%i_Barridos%i_.txt", dim, muestreos);
-	sprintf(filename, "MvsJ_dim%i_Barridos%i.txt", dim, muestreos);
+	sprintf(filenameE, "EvsJ_dim%i_Barridos%i_tau%i.txt", dim, muestreos, tau);
+	sprintf(filename, "MvsJ_dim%i_Barridos%i_tau%i.txt", dim, muestreos, tau);
 	
 
 	fpE = fopen(filenameE,"w");
@@ -68,8 +68,8 @@ int main()
 			{
 				M = Flip(red, dim, B, J, E_suma, E);
 			}
-			fprintf(fp,"%lf\t", M);
-			fprintf(fpE,"%lf\t", E[0]);
+			fprintf(fp,"%lf ", M);
+			fprintf(fpE,"%lf ", E[0]);
 		}
 		fprintf(fp,"\n");
 		fprintf(fpE,"\n");
@@ -82,5 +82,8 @@ int main()
 	end = clock();
 	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
 	printf("tiempo = %lf\n", cpu_time_used);
+	printf("\nLos archivos son\n");
+	printf("\n\n%s\n\n", filenameE);
+	printf("\n\n%s\n\n", filename);
 	return 0;
 }
