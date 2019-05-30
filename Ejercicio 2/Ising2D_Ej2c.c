@@ -42,8 +42,8 @@ int main()
 	char filenameE[64];
 	char filename[64];
 	
-	sprintf(filenameE, "EvsJ_dim%i_Barridos%i_tau%i.txt", dim, muestreos, tau);
-	sprintf(filename, "MvsJ_dim%i_Barridos%i_tau%i.txt", dim, muestreos, tau);
+	sprintf(filenameE, "EvsJ_dim%i_Barridos%i_tau%i.txt", dim, muestreos,tau);
+	sprintf(filename, "MvsJ_dim%i_Barridos%i_tau%i.txt", dim, muestreos,tau);
 	
 
 	fpE = fopen(filenameE,"w");
@@ -54,11 +54,10 @@ int main()
 	double cpu_time_used;
     start = clock();
 	
-	tiempo = (double)2*dim*dim*muestreos*tau*50/(double)65641025;
-	printf("\nEsto va a tardar aprox %.0lf segundos o %.2lf minutos\n", tiempo ,tiempo/60);
+	tiempo = dim*dim*muestreos*3500/280000000;
+	printf("\nEsto va a tardar aprox %.0lf segundos o %.0lf minutos\n", tiempo ,tiempo/60);
 	for(J = 0.1; J < 0.6; J = J + 0.01)
 	{	
-		printf("J = %lf\n",J);
 		E_suma = 0.0;
 		fprintf(fp,"%lf\t",J);
 		fprintf(fpE,"%lf\t",J);
@@ -68,8 +67,8 @@ int main()
 			{
 				M = Flip(red, dim, B, J, E_suma, E);
 			}
-			fprintf(fp,"%lf ", M);
-			fprintf(fpE,"%lf ", E[0]);
+			fprintf(fp,"%lf\t", M/(dim*dim));
+			fprintf(fpE,"%lf\t", -E[0]*J);
 		}
 		fprintf(fp,"\n");
 		fprintf(fpE,"\n");
@@ -82,8 +81,5 @@ int main()
 	end = clock();
 	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
 	printf("tiempo = %lf\n", cpu_time_used);
-	printf("\nLos archivos son\n");
-	printf("\n\n%s\n\n", filenameE);
-	printf("\n\n%s\n\n", filename);
 	return 0;
 }

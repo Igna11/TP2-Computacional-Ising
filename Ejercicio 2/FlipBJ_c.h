@@ -34,11 +34,11 @@ int Flip(int* red, int dim, double B, double J, double E_suma, double* E) // de 
 
 			if(P_aceptacion > rnd) red[j*dim + i] = -S;
 			
-			E_suma += (S_arriba + S_abajo + S_izq + S_der)*(double)S;
+			E_suma += S*(S_arriba + S_abajo + S_izq + S_der);
 		}			
 	}
 	
-	E[0] = E_suma;	
+	E[0] = E_suma/(2*dim*dim);	
 
 	for(i = 0; i < dim*dim; i++)
 	{
