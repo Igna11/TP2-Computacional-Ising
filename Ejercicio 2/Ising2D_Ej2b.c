@@ -51,7 +51,7 @@ int main()
 	double cpu_time_used;
     start = clock();
 	
-	tiempo = dim*dim*muestreos*3500/280000000;
+	tiempo = (double)2*dim*dim*muestreos*tau*50/(double)65641025;
 	printf("\nEsto va a tardar aprox %.0lf segundos o %.0lf minutos\n", tiempo ,tiempo/60);
 		
 	for(J = 0.1; J < 0.6; J = J + 0.01)
