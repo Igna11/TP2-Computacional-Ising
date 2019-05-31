@@ -13,12 +13,11 @@
 int poblar(int *red, double p, int dim);
 int imprimir(int* red, int dim);
 int Flip(int* red, int dim, double B, double T, double J);
-double M_corr(double* mag, double* c_k, int* red, int dim, double B, double T, double J, int muestreos, int k_max);
 
 int main()
 {
-	int *red, dim, muestreos, promedios, i, k, k_max;
-	double *mag, *c_k, *c_kprom, B, T, J;
+	int *red, dim, muestreos, promedios, i, k;
+	double *mag, *mag_prom, B, T, J, M;
 	
 	printf("\nDame dimension de la red\n");
 	scanf("%i", &dim);
@@ -33,68 +32,66 @@ int main()
 	scanf("%i", &promedios);
 	printf("\n\n");
 	
-	k_max = muestreos/2;
-	
 	red = (int*)malloc(dim*dim*sizeof(int));
 	mag = (double*)malloc(muestreos*sizeof(double));
-	c_k = (double*)malloc(k_max*sizeof(double));
-	c_kprom = (double*)malloc(k_max*sizeof(double));
+	mag_prom = (double*)malloc(muestreos*sizeof(double));
 	srand(time(NULL));
 	
 	//valores que pide el problema: B = 0, inicializo M = 0 y poblar con p = 0.5
 	
-	B = 0.0;	
-	poblar(red, 0.5, dim);
-
-	//FILE* fp;
+	B = 0.0;
+	M = 0.0;
 	
 	//forma cool de definir el nombre del .txt, para favorecer orden
-	//char filename[64];
+	FILE *fp;
+	char filename[64];
 	
-	//sprintf(filename, "CorvsK_dim%i_Pasos%i_prom%i.txt", dim, muestreos, promedios);
+	sprintf(filename, "CorvsK_dim%i_Pasos%i_prom%i.txt", dim, muestreos, promedios);
 	
-	//fp = fopen(filename, "w");
+	fp = fopen(filename, "w");
 	
 	//para medir el tiempo
 	clock_t start, end;
 	double cpu_time_used;
     start = clock();
-	
-	for(J = 0.1; J < 0.6; J = J + 0.001)
-	{	
-		//fprintf(fp,"%lf\t", J);
-		printf("J = %lf\n", J);
-		
-		//limpio c_k y c_kprom
-		for(k = 0; k < k_max; k++)
+	poblar(red, 0.5, dim);
+
+	printf("nombre de archivo: %s\n", filename);
+	for(J = 0.1; J < 0.6; J = J + 0.01)
+	{
+		//reinicio mag_prom
+		for(i = 0; i < muestreos; i++)
 		{
-			c_kprom[k] = 0;
-			c_k[k] = 0;
-			//printf("indice %i borro\n", k);
+			mag_prom[i] = 0;
 		}
 		
-		for(i = 0; i < promedios; i++)
+		for(k = 0; k < promedios; k++)
 		{
-			M_corr(mag, c_k, red, dim, B, T, J, muestreos, k_max);
-			
-			for(k = 0; k < k_max; k++)
+			for(i = 0; i < muestreos; i++)
 			{
-				c_kprom[k] += c_k[k];
+				//calculo la magnetización para un dado muestreo.
+				M = Flip(red, dim, B, T, J);
+				mag[i] = M;
+			}
+			
+			for(i = 0; i < muestreos; i++)
+			{
+				mag_prom[i] += mag[i]/(double)promedios;
 			}
 		}
-		for(k = 0; k < k_max; k++)
+		
+		fprintf(fp,"%lf\t", J);
+		printf("J = %lf\n", J);
+		
+		for(i = 0; i < muestreos; i++)
 		{
-			//fprintf(fp,"%lf ", c_kprom[k]);
-			printf("c_k[%i] = %lf\t c_kprom[%i] = %lf\n ", k, c_k[k], k, c_kprom[k]/promedios);
+			fprintf(fp,"%lf ", mag_prom[i]);
 		}
-		//fprintf(fp,"\n");
-		//printf("\n");
+		fprintf(fp,"\n");
 	}
-	//fclose(fp);
 	free(red);
 	free(mag);
-	free(c_k);
-	free(c_kprom);
+	free(mag_prom);
 	
 	end = clock();
 	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;

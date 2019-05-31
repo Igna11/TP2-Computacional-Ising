@@ -7,18 +7,15 @@
 #include "Poblar.h"
 #include "Imprimir.h"
 #include "FlipBJ.h"
-#include "MedVal_d.h"
-#include "M_corr.h"
 
 int poblar(int *red, double p, int dim);
 int imprimir(int* red, int dim);
 int Flip(int* red, int dim, double B, double T, double J);
-double M_corr(double* mag, double* c_k, int* red, int dim, double B, double T, double J, int muestreos, int k_max)
 
 int main()
 {
 	int *red, dim, muestreos, promedios, i, k;
-	double M, B, T, J, m_suma, m, tiempo;
+	double M, B, T, J, m_suma, m, M2, M2_suma, m2, tiempo;
 	
 	printf("\nDame dimension de la red\n");
 	scanf("%i", &dim);
@@ -39,6 +36,7 @@ int main()
 	
 	//valores que pide el problema: B = 0, inicializo M = 0 y poblar con p = 0.5
 	M = 0.0;
+	M2 = 0.0;
 	B = 0.0;	
 	poblar(red, 0.5, dim);
 
@@ -47,7 +45,7 @@ int main()
 	//forma cool de definir el nombre del .txt, para favorecer orden
 	char filename[64];
 	
-	sprintf(filename, "MvsJ_dim%i_T%.2lf_Pasos%i_prom%i.txt", dim, T, muestreos, promedios);
+	sprintf(filename, "MvsJ_conCHI_dim%i_T%.2lf_Pasos%i_prom%i.txt", dim, T, muestreos, promedios);
 	
 	fp = fopen(filename, "w");
 	
@@ -56,29 +54,39 @@ int main()
 	double cpu_time_used;
     start = clock();
 	
-	tiempo = dim*dim*promedios*muestreos*3500/280000000;
-	printf("\nEsto va a tardar aprox %.0lf segundos o %.0lf minutos\n", tiempo ,tiempo/60);
+	tiempo = (double)dim*dim*promedios*muestreos*500*2/(double)66597294;
+	printf("\nEsto va a tardar aprox %.0lf segundos o %.2lf minutos\n", tiempo ,tiempo/60);
 	for(J = 0.1; J < 0.6; J = J + 0.001)
 	{	
 		m_suma = 0.0;
+		M2_suma = 0.0;
 		for(i = 0; i < promedios; i++)
 		{
 			for(k = 0; k < muestreos; k++)
 			{
 				M = Flip(red, dim, B, T, J);
+				M2 = M*M;
 			}
 			m_suma += M;
+			M2_suma += M2;
 		}
-		m = m_suma/(dim*dim*promedios);
-		M = M/(dim*dim);
-		fprintf(fp,"%lf\t%lf\t%.20lf\n", J, M, m);
-		printf("J = %lf\t M = %.2lf\t M_prom = %lf\n", J, M, m);
+		M = M/(dim*dim); //<S_i>
+		m = m_suma/(dim*dim*promedios); //<S_i> promediados
+		M2 = M2/(dim*dim); //<S_i^2>
+		m2 = m*m;//<S_i>^2 promediados
+		fprintf(fp,"%lf\t%lf\t%lf\t%lf\t%lf\n", J, M, m, M2, m2);
+		printf("J = %lf\t M = %.2lf\t <M> = %lf\t <M^2> = %lf\t <M>^2 = %lf\n", J, M, m, M2, m2);
 	}
 	fclose(fp);
 	free(red);
 	
 	end = clock();
 	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+	double trabajo = (double)dim*dim*2*promedios*muestreos*500/cpu_time_used;
+	
+	printf("aproximadamente %.0lf iteraciones en\n", (double)dim*dim*2*promedios*muestreos*500);
 	printf("tiempo = %lf\n", cpu_time_used);
+	printf("Son entonces %.0lf iteraciones por segundo\n", trabajo);
+	printf("el archivo se llama %s\n", filename);
 	return 0;
 }
