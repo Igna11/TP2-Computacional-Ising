@@ -24,13 +24,15 @@ int main()
 	printf("\nDame el tau\n");
 	scanf("%i", &tau);
 	
+	printf("\nDame B\n");
+	scanf("%lf",&B);
+	
 	red = (int*)malloc(dim*dim*sizeof(int));
 	
 	srand(time(NULL));
 	
-	//valores que pide el problema: B = 0, inicializo M = 0 y poblar con p = 0.5
+	//valores que pide el problema: inicializo M = 0 y poblar con p = 0.5
 	M = 0.0;
-	B = 0.0;
 	E_suma = 0.0;
 	E = (double*)malloc(1*sizeof(double));
 	poblar(red, 0.5, dim);
@@ -42,8 +44,8 @@ int main()
 	char filenameE[64];
 	char filename[64];
 	
-	sprintf(filenameE, "Item_e_EvsJ_dim%i_Barridos%i_tau%i.txt", dim, muestreos, tau);
-	sprintf(filename, "Item_e_MvsJ_dim%i_Barridos%i_tau%i.txt", dim, muestreos, tau);
+	sprintf(filenameE, "Item_e_EvsJ_dim%i_Barridos%i_tau%i_B%.2lf.txt", dim, muestreos, tau, B);
+	sprintf(filename, "Item_e_MvsJ_dim%i_Barridos%i_tau%i_B%.2lf.txt", dim, muestreos, tau, B);
 	
 
 	fpE = fopen(filenameE,"w");
