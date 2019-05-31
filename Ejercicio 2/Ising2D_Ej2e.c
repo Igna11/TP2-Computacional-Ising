@@ -1,11 +1,11 @@
-/* gcc -Wall -O3 -o Ising2D_Ej2d.exe Ising2D_Ej2d.c -lm*/
+/* gcc -Wall -O3 -o Ising2D_Ej2e.exe Ising2D_Ej2e.c -lm*/
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
 #include "Poblar.h"
-#include "FlipBJ_c.h"
+#include "FlipBJ2.h"
 
 int poblar(int *red, double p, int dim);
 int Flip(int* red, int dim, double B, double J, double E_suma, double* E);
@@ -24,15 +24,13 @@ int main()
 	printf("\nDame el tau\n");
 	scanf("%i", &tau);
 	
-	printf("\nDame el campo B\n");
-	scanf("%lf", &B);
-	
 	red = (int*)malloc(dim*dim*sizeof(int));
 	
 	srand(time(NULL));
 	
 	//valores que pide el problema: B = 0, inicializo M = 0 y poblar con p = 0.5
 	M = 0.0;
+	B = 0.0;
 	E_suma = 0.0;
 	E = (double*)malloc(1*sizeof(double));
 	poblar(red, 0.5, dim);
@@ -44,8 +42,8 @@ int main()
 	char filenameE[64];
 	char filename[64];
 	
-	sprintf(filenameE, "Item_d_EvsJ_dim%i_Barridos%i_tau%i_B%.3lf.txt", dim, muestreos, tau, B);
-	sprintf(filename, "Item_d_MvsJ_dim%i_Barridos%i_tau%i_B%.3lf.txt", dim, muestreos, tau, B);
+	sprintf(filenameE, "Item_e_EvsJ_dim%i_Barridos%i_tau%i.txt", dim, muestreos, tau);
+	sprintf(filename, "Item_e_MvsJ_dim%i_Barridos%i_tau%i.txt", dim, muestreos, tau);
 	
 
 	fpE = fopen(filenameE,"w");
@@ -56,7 +54,7 @@ int main()
 	double cpu_time_used;
     start = clock();
 	
-	tiempo = (double)2*dim*dim*muestreos*tau*200/(double)65641025;
+	tiempo = (double)2*dim*dim*muestreos*tau*200/(double)15641025;
 	printf("\nEsto va a tardar aprox %.0lf segundos o %.0lf minutos\n", tiempo ,tiempo/60);
 	for(J = 1.0; J >= -1.0; J = J - 0.01)
 	{	
